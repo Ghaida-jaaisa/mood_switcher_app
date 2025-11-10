@@ -14,17 +14,30 @@ const autoBtn = document.getElementById("auto-btn");
 const moodStatus = document.querySelector("#mood-text strong");
 const body = document.body;
 const autoMood = 3;
+let autoInterval = null;
+let isAutoRunning = false;
+let arrayIndex = null;
 
 autoBtn.addEventListener("click", () => {
-  moodStatus.innerText = generateText(autoMood);
-  changeBodyBackgroundColor(autoMood);
+  if (isAutoRunning) {
+    // clear interval
+    clearInterval(autoInterval);
+    autoBtn.innerText = "Start Auto";
+    isAutoRunning = false;
+  } else {
+    autoInterval = setInterval(() => {
+      setMood(autoMood);
+    }, 2000);
+    autoBtn.innerText = "Stop Auto";
+    isAutoRunning = true;
+  }
 });
 
 changeBtn.addEventListener("click", () => {
   // Generate random number
-  let arrayIndex = Math.floor(Math.random() * moods.length);
+  arrayIndex = Math.floor(Math.random() * moods.length);
   moodStatus.innerText = generateText(arrayIndex);
-  changeBodyBackgroundColor(arrayIndex);
+  setMood(arrayIndex);
 });
 
 function generateText(arrayIndex) {
@@ -33,4 +46,9 @@ function generateText(arrayIndex) {
 
 function changeBodyBackgroundColor(arrayIndex) {
   body.style.backgroundColor = moods[arrayIndex]["color"];
+}
+
+function setMood(arrayIndex) {
+  moodStatus.innerText = generateText(arrayIndex);
+  changeBodyBackgroundColor(arrayIndex);
 }
