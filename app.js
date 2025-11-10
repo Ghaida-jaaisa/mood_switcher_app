@@ -13,30 +13,26 @@ const changeBtn = document.getElementById("change-btn");
 const autoBtn = document.getElementById("auto-btn");
 const moodStatus = document.querySelector("#mood-text strong");
 const body = document.body;
-const autoMood = 3;
 let autoInterval = null;
-let isAutoRunning = false;
 let arrayIndex = null;
 
 autoBtn.addEventListener("click", () => {
-  if (isAutoRunning) {
+  if (autoInterval != null) {
     // clear interval
     clearInterval(autoInterval);
     autoBtn.innerText = "Start Auto";
-    isAutoRunning = false;
   } else {
     autoInterval = setInterval(() => {
-      setMood(autoMood);
+      let arrayIndex = Math.floor(Math.random() * moods.length);
+      setMood(arrayIndex);
     }, 2000);
     autoBtn.innerText = "Stop Auto";
-    isAutoRunning = true;
   }
 });
 
 changeBtn.addEventListener("click", () => {
   // Generate random number
   arrayIndex = Math.floor(Math.random() * moods.length);
-  moodStatus.innerText = generateText(arrayIndex);
   setMood(arrayIndex);
 });
 
